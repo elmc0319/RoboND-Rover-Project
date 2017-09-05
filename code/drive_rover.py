@@ -1,4 +1,5 @@
 # Do the necessary imports
+# Ran Roversim at 1024 x 768 at the "good" graphics setting
 import argparse
 import shutil
 import base64
@@ -53,14 +54,14 @@ class RoverState():
         self.nav_dists = None # Distances of navigable terrain pixels
         self.ground_truth = ground_truth_3d # Ground truth worldmap
         self.mode = 'forward' # Current mode (can be forward or stop)
-        self.throttle_set = 0.2 # Throttle setting when accelerating
+        self.throttle_set = 0.4 # Throttle setting when accelerating
         self.brake_set = 5#10 # Brake setting when braking
         # The stop_forward and go_forward fields below represent total count
         # of navigable terrain pixels.  This is a very crude form of knowing
         # when you can keep going and when you should stop.  Feel free to
         # get creative in adding new fields or modifying these!
-        self.stop_forward = 50 # Threshold to initiate stopping
-        self.go_forward = 500 # Threshold to go forward again
+        self.stop_forward = 300 # Threshold to initiate stopping
+        self.go_forward = 600 # Threshold to go forward again
         self.max_vel = 1.5 # Maximum velocity (meters/second)
         # Image output from perception step
         # Update this image to display your intermediate analysis steps
@@ -76,6 +77,9 @@ class RoverState():
         self.near_sample = 0 # Will be set to telemetry value data["near_sample"]
         self.picking_up = 0 # Will be set to telemetry value data["picking_up"]
         self.send_pickup = False # Set to True to trigger rock pickup
+        # State variables to store relative rock locations
+        self.rock_angle = None
+        self.rock_dist = None
 # Initialize our rover
 Rover = RoverState()
 

@@ -1,6 +1,8 @@
 import numpy as np
 import cv2
 
+# Ran Roversim at 1024 x 768 at the "good" graphics setting
+
 # Identify pixels above the threshold
 # Threshold of RGB > 160 does a nice job of identifying ground pixels only
 def color_thresh(img, rgb_thresh=(160, 165, 160)):
@@ -148,7 +150,8 @@ def perception_step(Rover):
         # Example: Rover.worldmap[obstacle_y_world, obstacle_x_world, 0] += 1
         #          Rover.worldmap[rock_y_world, rock_x_world, 1] += 1
         #          Rover.worldmap[navigable_y_world, navigable_x_world, 2] += 1
-    Rover.worldmap[y_world, x_world, 2] += 5 #10
+# favor navigable terrain to the obstacles so the rover steers away from them
+    Rover.worldmap[y_world, x_world, 2] += 18#20 #10
     Rover.worldmap[obs_y_world, obs_x_world, 0] +=1
     # 8) Convert rover-centric pixel positions to polar coordinates
     dist, angles = to_polar_coords(xpix, ypix)
@@ -169,9 +172,12 @@ def perception_step(Rover):
         rock_xcen = rock_x_world[rock_idx]
         rock_ycen = rock_y_world[rock_idx]
 
+        Rover.rock_dist, Rover.rock_angle = rock_dist, rock_ang
+
         Rover.worldmap[rock_ycen, rock_xcen, 1] = 255
         Rover.vision_image[:, :, 1] = rock_map * 255
     else:
+        Rover.rock_dist = Rover.rock_angle = None
         Rover.vision_image[:,:,1] = 0
 
 
