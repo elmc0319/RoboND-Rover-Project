@@ -61,6 +61,7 @@ def decision_step(Rover):
                     Rover.mode = 'stop'
 
         # If we're already in "stop" mode then make different decisions
+        # added logic to pickup rocks
         elif Rover.mode == 'stop':
             # If we're in stop mode but still moving keep braking
             if Rover.vel > 0.2:
@@ -85,6 +86,7 @@ def decision_step(Rover):
                     # Set steer to mean angle
                     Rover.steer = np.clip(np.mean(Rover.nav_angles * 180/np.pi), -15, 15)#-15,15
                     Rover.mode = 'forward'
+        # sees rock, hits brake to slow rover down and stop to pick up rocks
         elif Rover.mode == 'pickup':
             Rover.brake = Rover.brake_set
 
